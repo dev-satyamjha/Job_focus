@@ -2,7 +2,11 @@
 
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 
 // Public Frontend Routes
 Route::get("/", [FrontendController::class, "index"])->name("frontend.index");
@@ -26,8 +30,6 @@ Route::middleware(["auth", "verified"])
         Route::resource("blogs", BlogController::class);
     });
 
-use App\Http\Controllers\ProfileController;
-
 Route::middleware("auth")->group(function () {
     Route::get("/profile", [ProfileController::class, "edit"])->name(
         "profile.edit",
@@ -42,11 +44,19 @@ Route::middleware("auth")->group(function () {
 
 require __DIR__ . "/auth.php";
 
-use Illuminate\Support\Facades\Artisan;
-
 Route::get("/live-setup", function () {
     Artisan::call("migrate:fresh", ["--force" => true, "--seed" => true]);
     Artisan::call("storage:link");
 
     return "Live setup completed successfully! You can now delete this route.";
+});
+
+Route::get("/fix-db", function () {
+    if (!Schema::hasColumn("blogs", "is_approved")) {
+        Schema::table("blogs", function (Blueprint $table) {
+            $table->boolean("is_approved")->default(0)->after("slug");
+        });
+        return "SUCCESS: The 'is_approved' column was added to your database! You can now go create a blog post.";
+    }
+    return "The column already exists!";
 });

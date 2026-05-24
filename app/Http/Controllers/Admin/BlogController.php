@@ -7,7 +7,6 @@ use App\Models\Blog;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
 {
@@ -34,11 +33,22 @@ class BlogController extends Controller
             "image" => "nullable|image|mimes:jpeg,png,jpg,webp|max:2048",
         ]);
 
-        $data = $request->all();
+        $data = $request->except("image");
         $data["slug"] = Str::slug($request->title) . "-" . time();
+        $data["is_approved"] = true;
 
         if ($request->hasFile("image")) {
-            $data["image"] = $request->file("image")->store("blogs", "public");
+            $imageName =
+                time() .
+                "-" .
+                uniqid() .
+                "." .
+                $request->file("image")->extension();
+            $request
+                ->file("image")
+                ->move(public_path("uploads/blogs"), $imageName);
+
+            $data["image"] = "uploads/blogs/" . $imageName;
         }
 
         Blog::create($data);
@@ -64,19 +74,32 @@ class BlogController extends Controller
             "image" => "nullable|image|mimes:jpeg,png,jpg,webp|max:2048",
         ]);
 
-        $data = $request->all();
+        $data = $request->except("image");
+
         if ($request->title !== $blog->title) {
             $data["slug"] = Str::slug($request->title) . "-" . time();
         }
 
-        if ($request->hasFile("image")) {
-            if ($blog->image) {
-                Storage::disk("public")->delete($blog->image);
-            }
-            $data["image"] = $request->file("image")->store("blogs", "public");
-        }
+        $data["is_approved"] = $request->has("is_approved");
 
+        if ($request->hasFile("image")) {
+            if ($blog->image && file_exists(public_path($blog->image))) {
+                unlink(public_path($blog->image));
+            }
+
+            $imageName =
+                time() .
+                "-" .
+                uniqid() .
+                "." .
+                $request->file("image")->extension();
+            $request
+                ->file("image")
+                ->move(public_path("uploads/blogs"), $imageName);
+            $data["image"] = "uploads/blogs/" . $imageName;
+        }
         $blog->update($data);
+
         return redirect()
             ->route("admin.blogs.index")
             ->with("success", "Blog updated successfully.");
@@ -84,10 +107,12 @@ class BlogController extends Controller
 
     public function destroy(Blog $blog)
     {
-        if ($blog->image) {
-            Storage::disk("public")->delete($blog->image);
+        if ($blog->image && file_exists(public_path($blog->image))) {
+            unlink(public_path($blog->image));
         }
+
         $blog->delete();
+
         return redirect()
             ->route("admin.blogs.index")
             ->with("success", "Blog deleted successfully.");

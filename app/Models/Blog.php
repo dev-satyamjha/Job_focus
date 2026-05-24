@@ -15,6 +15,7 @@ class Blog extends Model
         "short_description",
         "content",
         "published_date",
+        "is_approved",
     ];
 
     protected $casts = [

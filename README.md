@@ -101,3 +101,5 @@ composer update
 Contributions, issues, and feature requests are welcome! 
 
 ---
+
+> **Note:**  This is a fun and demo project intended for learning the tech stack, do not infer any information from the site as they are just demo blogs.

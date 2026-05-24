@@ -21,6 +21,7 @@
                             <th class="border-b py-2 px-4">Title</th>
                             <th class="border-b py-2 px-4">Category</th>
                             <th class="border-b py-2 px-4">Date</th>
+                            <th class="border-b py-2 px-4">Status</th>
                             <th class="border-b py-2 px-4">Actions</th>
                         </tr>
                     </thead>
@@ -30,6 +31,13 @@
                                 <td class="border-b py-2 px-4">{{ $blog->title }}</td>
                                 <td class="border-b py-2 px-4">{{ $blog->category->name }}</td>
                                 <td class="border-b py-2 px-4">{{ $blog->published_date->format('Y-m-d') }}</td>
+                                <td class="border-b py-2 px-4">
+                                    @if($blog->is_approved)
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Approved</span>
+                                    @else
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                                    @endif
+                                </td>
                                 <td class="border-b py-2 px-4 flex gap-2">
                                     <a href="{{ route('admin.blogs.edit', $blog->id) }}" class="text-blue-500 hover:underline">Edit</a>
                                     <form action="{{ route('admin.blogs.destroy', $blog->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">

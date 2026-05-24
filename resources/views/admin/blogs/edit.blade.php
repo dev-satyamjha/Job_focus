@@ -36,7 +36,7 @@
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2">Current Image</label>
                         @if($blog->image)
-                            <img src="{{ asset('storage/' . $blog->image) }}" class="h-20 mb-2">
+                            <img src="{{ asset($blog->image) }}" class="h-20 mb-2">
                         @endif
                         <input type="file" name="image" class="w-full border-gray-300 rounded" accept="image/*">
                     </div>
@@ -44,6 +44,13 @@
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2">Published Date</label>
                         <input type="date" name="published_date" value="{{ $blog->published_date->format('Y-m-d') }}" class="w-full border-gray-300 rounded" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="inline-flex items-center">
+                            <input type="checkbox" name="is_approved" value="1" {{ $blog->is_approved ? 'checked' : '' }} class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
+                            <span class="ml-2 text-gray-700">Approve this post</span>
+                        </label>
                     </div>
 
                     <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Update Blog</button>

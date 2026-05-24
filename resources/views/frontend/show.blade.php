@@ -13,7 +13,7 @@
     <div class="text-muted small mb-4">Published on {{ $blog->published_date->format('F d, Y') }}</div>
 
     @if($blog->image)
-        <img src="{{ asset('storage/' . $blog->image) }}" class="img-fluid rounded mb-4 w-100" alt="{{ $blog->title }}" style="max-height: 450px; object-fit: cover;">
+        <img src="{{ asset($blog->image) }}" class="img-fluid rounded mb-4 w-100" alt="{{ $blog->title }}" style="max-height: 450px; object-fit: cover;">
     @endif
 
     <div class="blog-content entry-textline-height fs-5">
