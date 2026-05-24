@@ -1,58 +1,103 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Job focus Portal 🚀
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modern, dynamic web portal built with Laravel to manage and publish job updates, examination results, and admit cards. Designed with a clean UI and a robust backend to handle content management efficiently.
 
-## About Laravel
+## ✨ Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+* **Dynamic Content Management:** Create, edit, and publish blog posts and updates instantly.
+* **Categorization Engine:** Filter content by specific tags such as "Admit Card", "Result", and "Job Updates".
+* **Secure Admin Dashboard:** Protected backend routing for content creators.
+* **Media Handling:** Integrated image upload and serving capabilities.
+* **Optimized Database:** Custom schema lengths configured for seamless deployment on restrictive shared hosting environments.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🛠️ Tech Stack
 
-## Learning Laravel
+* **Framework:** Laravel 13
+* **Language:** PHP 8.3
+* **Database:** MySQL
+* **Frontend:** Blade Templating, HTML5, CSS3
+* **Environment:** Compatible with local setups (Linux/Arch, Windows, macOS) and shared hosting (Apache/cPanel/vPanel).
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🚀 Local Installation & Setup
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+To get a local copy up and running on your machine, follow these steps:
 
-## Agentic Development
+### Prerequisites
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+* PHP >= 8.3
+* Composer
+* MySQL or MariaDB
 
+### Steps
+
+**1. Clone the repository:**
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/dev-satyamjha/Job_focus.git
+cd Job_focus
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+**2. Install Composer Dependencies:**
+```bash
+composer install
+```
 
-## Contributing
+**3. Environment Setup:**
+```bash
+cp .env.example .env
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Open the `.env` file and configure your local `DB_DATABASE`, `DB_USERNAME`, and `DB_PASSWORD`.
 
-## Code of Conduct
+**4. Generate Application Key:**
+```bash
+php artisan key:generate
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**5. Run Migrations & Seeders:**
+```bash
+php artisan migrate:fresh --seed
+```
 
-## Security Vulnerabilities
+**6. Link Storage (For Images):**
+```bash
+php artisan storage:link
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**7. Start the Development Server:**
+```bash
+php artisan serve
+```
 
-## License
+Visit `http://localhost:8000` in your browser.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 🌍 Shared Hosting Deployment Guide (InfinityFree / cPanel)
+
+This project has been specifically optimized to bypass common restrictions found on free and shared hosting platforms.
+
+**1. PHP Version Compatibility:** Ensure your server is running PHP 8.3. If your local machine uses a newer version (e.g., PHP 8.5), enforce the platform target in Composer before uploading:
+```bash
+composer config platform.php 8.3.0
+composer update
+```
+
+**2. Database String Limits:** The `AppServiceProvider.php` is pre-configured with `Schema::defaultStringLength(191);` to prevent `1071 Specified key was too long` errors on older MySQL servers.
+
+**3. Session Management:** If deployment fails due to database connection delays during setup, update the server `.env` to use `SESSION_DRIVER=file`.
+
+**4. Routing:** Place the provided `.htaccess` file in your `htdocs` or `public_html` root to silently route traffic to the Laravel `public/` directory without exposing core files.
+
+**5. Storage Workaround:** If `exec()` is disabled on your host preventing `php artisan storage:link`, manually copy the contents of `storage/app/public` into `public/storage`.
+
+---
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome! 
+
+---
