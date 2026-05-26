@@ -129,4 +129,10 @@ class BlogController extends Controller
             ->route("admin.blogs.index")
             ->with("success", "Blog deleted successfully.");
     }
+
+    public function toggleApproval(Blog $blog)
+    {
+        $blog->update(["is_approved" => !$blog->is_approved]);
+        return back()->with("success", "Blog approval status updated!");
+    }
 }

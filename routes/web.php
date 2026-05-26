@@ -4,9 +4,6 @@ use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 
 // Public Frontend Routes
 Route::get("/", [FrontendController::class, "index"])->name("frontend.index");
@@ -15,6 +12,13 @@ Route::get("/blogs/filter", [FrontendController::class, "filter"])->name(
 );
 Route::get("/blog/{slug}", [FrontendController::class, "show"])->name(
     "frontend.show",
+);
+
+Route::get("/submit-post", [FrontendController::class, "createPost"])->name(
+    "frontend.submit",
+);
+Route::post("/submit-post", [FrontendController::class, "storePost"])->name(
+    "frontend.store",
 );
 
 Route::get("/dashboard", function () {
@@ -28,6 +32,10 @@ Route::middleware(["auth", "verified"])
     ->name("admin.")
     ->group(function () {
         Route::resource("blogs", BlogController::class);
+        Route::patch("/blogs/{blog}/toggle-approval", [
+            BlogController::class,
+            "toggleApproval",
+        ])->name("blogs.toggle");
     });
 
 Route::middleware("auth")->group(function () {
@@ -43,41 +51,3 @@ Route::middleware("auth")->group(function () {
 });
 
 require __DIR__ . "/auth.php";
-
-Route::get("/live-setup", function () {
-    Artisan::call("migrate:fresh", ["--force" => true, "--seed" => true]);
-    Artisan::call("storage:link");
-
-    return "Live setup completed successfully! You can now delete this route.";
-});
-
-Route::get("/fix-db", function () {
-    if (!Schema::hasColumn("blogs", "is_approved")) {
-        Schema::table("blogs", function (Blueprint $table) {
-            $table->boolean("is_approved")->default(0)->after("slug");
-        });
-        return "SUCCESS: The 'is_approved' column was added to your database! You can now go create a blog post.";
-    }
-    return "The column already exists!";
-});
-
-Route::get("/fix-db-filters", function () {
-    if (!Schema::hasColumn("blogs", "work_model")) {
-        Schema::table("blogs", function (Blueprint $table) {
-            $table
-                ->string("experience_level")
-                ->nullable()
-                ->after("is_approved");
-            $table->string("work_model")->nullable()->after("experience_level");
-            $table->string("job_type")->nullable()->after("work_model");
-            $table->string("sector")->nullable()->after("job_type");
-            $table->string("tech_stack")->nullable()->after("sector");
-            $table
-                ->date("application_deadline")
-                ->nullable()
-                ->after("tech_stack");
-        });
-        return "SUCCESS: 6 new filter columns added to your database!";
-    }
-    return "The columns already exist!";
-});

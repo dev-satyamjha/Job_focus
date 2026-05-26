@@ -80,4 +80,42 @@ class FrontendController extends Controller
 
         return view("frontend.show", compact("blog"));
     }
+
+    public function createPost()
+    {
+        $categories = \App\Models\Category::all();
+        return view("frontend.submit", compact("categories"));
+    }
+
+    public function storePost(Request $request)
+    {
+        $validated = $request->validate([
+            "title" => "required|max:255",
+            "category_id" => "required|exists:categories,id",
+            "short_description" => "required",
+            "content" => "required",
+            "image" => "nullable|image|mimes:jpeg,png,jpg|max:2048",
+        ]);
+
+        $blog = new \App\Models\Blog($validated);
+        $blog->slug =
+            \Illuminate\Support\Str::slug($request->title) . "-" . time();
+        $blog->is_approved = false; // FORCES ADMIN APPROVAL
+        $blog->published_date = now();
+
+        if ($request->hasFile("image")) {
+            $imageName = time() . "." . $request->image->extension();
+            $request->image->move(public_path("uploads"), $imageName);
+            $blog->image = "uploads/" . $imageName;
+        }
+
+        $blog->save();
+
+        return redirect()
+            ->route("frontend.index")
+            ->with(
+                "success",
+                "Your post has been submitted and is waiting for admin approval!",
+            );
+    }
 }

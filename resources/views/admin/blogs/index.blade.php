@@ -45,6 +45,15 @@
                                         @method('DELETE')
                                         <button type="submit" class="text-red-500 hover:underline">Delete</button>
                                     </form>
+                                    <form action="{{ route('admin.blogs.toggle', $blog->id) }}" method="POST" class="inline-block mr-3">
+                                        @csrf
+                                        @method('PATCH')
+                                        @if($blog->is_approved)
+                                            <button type="submit" title="Revoke Approval" class="text-red-500 hover:text-red-700 font-bold text-lg">&#10006;</button>
+                                        @else
+                                            <button type="submit" title="Approve Post" class="text-green-500 hover:text-green-700 font-bold text-lg">&#10004;</button>
+                                        @endif
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
