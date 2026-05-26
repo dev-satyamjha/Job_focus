@@ -9,6 +9,20 @@ A modern, dynamic web portal built with Laravel to manage and publish job update
 * **Secure Admin Dashboard:** Protected backend routing for content creators.
 * **Media Handling:** Integrated image upload and serving capabilities.
 * **Optimized Database:** Custom schema lengths configured for seamless deployment on restrictive shared hosting environments.
+* **Advanced Filtering System:** Multi-parameter search including Experience Level, Work Model, Job Type, and application deadlines.
+* **Smart Categorization:** Grouped UI dropdowns intelligently.
+* **Community Submissions:** Public-facing submission portal allowing users to contribute job postings and articles.
+* **Admin Moderation Workflow:** One-click approve/revoke toggle in the admin dashboard for managing community-submitted content.
+
+---
+
+## 📸 Screenshots
+
+| Homepage & Filters | User Submission |
+| :---: | :---: |
+| ![Homepage](public/Assets/Home_page.jpg) | ![User Submission](public/Assets/User_Sub.jpg) |
+| **Admin Submission** | **Admin Dashboard** |
+| ![Admin Submission](public/Assets/Admin_Sub.jpg) | ![Admin Dashboard](public/Assets/Admin_DB.jpg) |
 
 ---
 
