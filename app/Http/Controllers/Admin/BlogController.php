@@ -31,6 +31,12 @@ class BlogController extends Controller
             "content" => "required",
             "published_date" => "required|date",
             "image" => "nullable|image|mimes:jpeg,png,jpg,webp|max:2048",
+            "experience_level" => "nullable|string",
+            "work_model" => "nullable|string",
+            "job_type" => "nullable|string",
+            "sector" => "nullable|string",
+            "tech_stack" => "nullable|string",
+            "application_deadline" => "nullable|date",
         ]);
 
         $data = $request->except("image");
@@ -72,6 +78,12 @@ class BlogController extends Controller
             "content" => "required",
             "published_date" => "required|date",
             "image" => "nullable|image|mimes:jpeg,png,jpg,webp|max:2048",
+            "experience_level" => "nullable|string",
+            "work_model" => "nullable|string",
+            "job_type" => "nullable|string",
+            "sector" => "nullable|string",
+            "tech_stack" => "nullable|string",
+            "application_deadline" => "nullable|date",
         ]);
 
         $data = $request->except("image");

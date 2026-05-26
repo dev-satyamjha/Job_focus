@@ -60,3 +60,24 @@ Route::get("/fix-db", function () {
     }
     return "The column already exists!";
 });
+
+Route::get("/fix-db-filters", function () {
+    if (!Schema::hasColumn("blogs", "work_model")) {
+        Schema::table("blogs", function (Blueprint $table) {
+            $table
+                ->string("experience_level")
+                ->nullable()
+                ->after("is_approved");
+            $table->string("work_model")->nullable()->after("experience_level");
+            $table->string("job_type")->nullable()->after("work_model");
+            $table->string("sector")->nullable()->after("job_type");
+            $table->string("tech_stack")->nullable()->after("sector");
+            $table
+                ->date("application_deadline")
+                ->nullable()
+                ->after("tech_stack");
+        });
+        return "SUCCESS: 6 new filter columns added to your database!";
+    }
+    return "The columns already exist!";
+});

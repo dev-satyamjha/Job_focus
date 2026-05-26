@@ -16,10 +16,17 @@ class Blog extends Model
         "content",
         "published_date",
         "is_approved",
+        "experience_level",
+        "work_model",
+        "job_type",
+        "sector",
+        "tech_stack",
+        "application_deadline",
     ];
 
     protected $casts = [
         "published_date" => "date",
+        "application_deadline" => "date",
     ];
 
     public function category(): BelongsTo
