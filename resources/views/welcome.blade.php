@@ -91,7 +91,7 @@
                     @if(request()->anyFilled(['search', 'category', 'experience_level', 'work_model', 'job_type', 'urgency']))
                         <a href="{{ route('frontend.index') }}" class="btn btn-outline-danger px-4">Clear Filters</a>
                     @endif
-                    <button type="submit" class="btn btn-dark px-5">Search & Filter</button>
+                    <button type="submit" class="btn btn-success px-5">Search & Filter</button>
                 </div>
 
             </form>
@@ -113,7 +113,7 @@
 
                     <div class="card-body d-flex flex-column">
                         <div class="mb-2">
-                            <span class="badge bg-primary">{{ $blog->category->name ?? 'Uncategorized' }}</span>
+                            <span class="badge bg-success">{{ $blog->category->name ?? 'Uncategorized' }}</span>
                             @if($blog->experience_level)
                                 <span class="badge bg-info text-dark">{{ $blog->experience_level }}</span>
                             @endif
@@ -123,7 +123,7 @@
 
                         <div class="mt-auto d-flex justify-content-between align-items-center pt-3 border-top">
                             <small class="text-muted">{{ $blog->published_date->format('M d, Y') }}</small>
-                            <a href="{{ route('frontend.show', $blog->slug) }}" class="btn btn-sm btn-outline-dark">Read More</a>
+                            <a href="{{ route('frontend.show', $blog->slug) }}" class="btn btn-sm btn-outline-success">Read More</a>
                         </div>
                     </div>
                 </div>
